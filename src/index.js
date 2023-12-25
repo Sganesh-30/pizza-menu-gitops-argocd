@@ -56,13 +56,16 @@ function App() {
   );
 }
 
-function Pizza() {
+function Pizza(props) {
   return (
-    <div>
-      <img src="pizzas/spinaci.jpg" alt="Pizza Spinaci " />
-      <h1>Pizza Spinaci</h1>
-      <p>Tomato, mozarella, and pepperoni</p>
-    </div>
+    <li className="pizza">
+      <img src={props.pizzaObj.photoName} alt={props.pizzaObj.name} />
+      <div>
+        <h1>{props.pizzaObj.name}</h1>
+        <p>{props.pizzaObj.ingredients}</p>
+        <span>{props.pizzaObj.price}</span>
+      </div>
+    </li>
   );
 }
 function Header() {
@@ -74,19 +77,26 @@ function Header() {
 }
 
 function Menu() {
+  pizzaData.map((pizza) => {});
   return (
     <main className="menu">
       <h2>our menu</h2>
-      <Pizza />
-      <Pizza />
-      <Pizza />
-      <Pizza />
+      <ul className="pizzas">
+        {/* pizzaData.map((pizza) => <Pizza name={pizza.name} ingredients={pizza.ingredients} photoName={pizza.photoName}/>)*/}
+        {pizzaData.map((pizza) => (
+          <Pizza pizzaObj={pizza} key={pizza.name}/>
+        ))}
+      </ul>
     </main>
   );
 }
 
 function Footer() {
-  return <footer className="footer"> {new Date().toLocaleTimeString()} we are not open</footer>;
+  return (
+    <footer className="footer">
+      {new Date().toLocaleTimeString()} we are not open
+    </footer>
+  );
 }
 //React version 18
 const root = ReactDom.createRoot(document.getElementById("root"));

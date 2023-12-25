@@ -56,7 +56,7 @@ function App() {
   );
 }
 
-function Pizza({pizzaObj}) {
+function Pizza({ pizzaObj }) {
   if (pizzaObj.soldOut) return null;
   return (
     <li className="pizza">
@@ -83,15 +83,19 @@ function Menu() {
     <main className="menu">
       <h2>our menu</h2>
       {pizzas.length > 0 ? (
+        <>
+        <p>We are selling great Italian pizza in India</p>
         <ul className="pizzas">
           {/* pizzaData.map((pizza) => <Pizza name={pizza.name} ingredients={pizza.ingredients} photoName={pizza.photoName}/>)*/}
           {pizzas.map((pizza) => (
             <Pizza pizzaObj={pizza} key={pizza.name} />
           ))}
         </ul>
+        </>
       ) : (
         <p>We are still working on the menu please come back later :)</p>
-      )}
+      )
+    }
     </main>
   );
 }
@@ -114,10 +118,12 @@ function Footer() {
   );
 }
 
-function Order({startHour,endHour}) {
+function Order({ startHour, endHour }) {
   return (
     <div className="order">
-      <p>We're open until from {startHour}:00 till {endHour}:00</p>
+      <p>
+        We're open until from {startHour}:00 till {endHour}:00
+      </p>
       <button className="btn">order</button>
     </div>
   );

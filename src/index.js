@@ -57,6 +57,7 @@ function App() {
 }
 
 function Pizza(props) {
+  if(props.pizzaObj.soldOut) return null;
   return (
     <li className="pizza">
       <img src={props.pizzaObj.photoName} alt={props.pizzaObj.name} />
@@ -77,24 +78,42 @@ function Header() {
 }
 
 function Menu() {
-  pizzaData.map((pizza) => {});
+  const pizzas = pizzaData;
   return (
     <main className="menu">
       <h2>our menu</h2>
-      <ul className="pizzas">
-        {/* pizzaData.map((pizza) => <Pizza name={pizza.name} ingredients={pizza.ingredients} photoName={pizza.photoName}/>)*/}
-        {pizzaData.map((pizza) => (
-          <Pizza pizzaObj={pizza} key={pizza.name}/>
-        ))}
-      </ul>
+      {pizzas.length > 0 ? (
+        <ul className="pizzas">
+          {/* pizzaData.map((pizza) => <Pizza name={pizza.name} ingredients={pizza.ingredients} photoName={pizza.photoName}/>)*/}
+          {pizzas.map((pizza) => (
+            <Pizza pizzaObj={pizza} key={pizza.name} />
+          ))}
+        </ul>
+      ) : (
+        <p>We are still working on the menu please come back later :)</p>
+      )}
     </main>
   );
 }
 
 function Footer() {
+  const hour = new Date().getHours();
+  const startHour = 7;
+  const endHour = 22;
+  const isOpen = startHour <= hour && hour <= endHour;
+  console.log(hour, startHour, endHour, isOpen);
   return (
     <footer className="footer">
-      {new Date().toLocaleTimeString()} we are not open
+      {isOpen ? (
+        <div className="order">
+          <p>We're open until till {endHour}:00</p>
+          <button className="btn">order</button>
+        </div>
+      ) : (
+        <p>
+          Sorry! we are closed. We are open from {startHour} to {endHour}{" "}
+        </p>
+      )}
     </footer>
   );
 }

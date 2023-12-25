@@ -57,7 +57,7 @@ function App() {
 }
 
 function Pizza(props) {
-  if(props.pizzaObj.soldOut) return null;
+  if (props.pizzaObj.soldOut) return null;
   return (
     <li className="pizza">
       <img src={props.pizzaObj.photoName} alt={props.pizzaObj.name} />
@@ -101,20 +101,25 @@ function Footer() {
   const startHour = 7;
   const endHour = 22;
   const isOpen = startHour <= hour && hour <= endHour;
-  console.log(hour, startHour, endHour, isOpen);
   return (
     <footer className="footer">
       {isOpen ? (
-        <div className="order">
-          <p>We're open until till {endHour}:00</p>
-          <button className="btn">order</button>
-        </div>
+        <Order startHour={startHour} endHour={endHour} />
       ) : (
         <p>
-          Sorry! we are closed. We are open from {startHour} to {endHour}{" "}
+          Sorry! we are closed. We are open from {startHour} to {endHour}
         </p>
       )}
     </footer>
+  );
+}
+
+function Order(props) {
+  return (
+    <div className="order">
+      <p>We're open until from {props.startHour}:00 till {props.endHour}:00</p>
+      <button className="btn">order</button>
+    </div>
   );
 }
 //React version 18

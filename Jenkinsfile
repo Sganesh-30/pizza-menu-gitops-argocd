@@ -20,11 +20,11 @@ pipeline {
         stage('Static Code Analysis') {
             steps {
                 withCredentials([string(credentialsId: 'sonarqube-token', variable: 'Sonar-Token')]) {
-                bat '''
-                sonar-scanner.bat 
-                -D"sonar.projectKey=pizza_app" \
-                -D"sonar.sources= /src/index.js" \
-                '''
+                    bat '''
+                    sonar-scanner.bat 
+                    -D"sonar.projectKey=pizza_app" \
+                    -D"sonar.sources= /src/index.js" \
+                    '''
                 }
             }
         }

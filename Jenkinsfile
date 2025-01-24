@@ -19,11 +19,11 @@ pipeline {
                 }
             }
         }
-        stage('Static Code Analysis') {
+        stage('SAST - SonarQube') {
             steps {
                 withCredentials([string(credentialsId: 'sonarqube-token', variable: 'Sonar-Token')]) {
                     bat '''
-                    sonar-scanner.bat 
+                    sonar-scanner.bat \
                     -D"sonar.projectKey=pizza_app" \
                     -D"sonar.sources= /src/index.js" \
                     -D"sonar.host.url=http://localhost:9000"

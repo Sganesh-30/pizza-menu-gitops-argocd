@@ -9,7 +9,7 @@ pipeline {
         }
         stage('Scanning Dependencies') {
             steps {
-                bat 'dependency-check --scan . --out target --format HTML'
+                'dependency-check --scan . --out target --format HTML'
             }
         }
     }

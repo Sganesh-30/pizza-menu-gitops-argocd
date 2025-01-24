@@ -12,6 +12,11 @@ pipeline {
                 dependencyCheck additionalArguments: 'dependency-check --scan . --out target --format ALL', odcInstallation: 'OWSAP-10'
             }
         }
+        stage('Code Coverage') {
+            steps {
+                bat 'npm run coverage'
+            }
+        }
         stage('Static Code Analysis') {
             steps {
                 bat '''

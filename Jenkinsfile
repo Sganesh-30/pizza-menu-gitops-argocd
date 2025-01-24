@@ -9,9 +9,7 @@ pipeline {
         }
         stage('Scanning Dependencies') {
             steps {
-                bat '''
-                    dependencyCheck additionalArguments: 'dependency-check --scan . --out target --format HTML', odcInstallation: 'OWSAP-10'
-                '''
+                dependencyCheck additionalArguments: 'dependency-check --scan . --out target --format HTML', odcInstallation: 'OWSAP-10'
             }
         }
     }

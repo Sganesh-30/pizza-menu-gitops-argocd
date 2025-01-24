@@ -28,7 +28,6 @@ pipeline {
                 -D"sonar.host.url=http://localhost:9000"
                 -D"sonar.token=sqp_2a1bb86ff24a2dfc37e45743a79dbce97051a03a"
                 '''
-                }
             }
         }
     }

@@ -10,8 +10,6 @@ pipeline {
         stage('Scanning Dependencies') {
             steps {
                 dependencyCheck additionalArguments: 'dependency-check --scan . --out target --format ALL', odcInstallation: 'OWSAP-10'
-
-                junit keepProperties: true, stdioRetention: '', testResults: 'dependency-check-report.xml'
             }
         }
         stage('Static Code Analysis') {

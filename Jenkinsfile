@@ -24,6 +24,7 @@ pipeline {
                     sonar-scanner.bat 
                     -D"sonar.projectKey=pizza_app" \
                     -D"sonar.sources= /src/index.js" \
+                    -D"sonar.host.url=http://localhost:9000"
                     '''
                 }
             }

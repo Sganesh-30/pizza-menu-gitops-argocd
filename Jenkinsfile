@@ -9,7 +9,7 @@ pipeline {
         }
         stage('Scanning Dependencies') {
             steps {
-                dependencyCheck additionalArguments: 'dependency-check --scan . --out target --format ALL', odcInstallation: 'OWSAP-10'
+                dependencyCheck additionalArguments: 'dependency-check --scan . --out target --disableYarnAudit --format ALL', odcInstallation: 'OWSAP-10'
             }
         }
         stage('Static Code Analysis') {

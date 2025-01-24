@@ -21,14 +21,13 @@ pipeline {
         }
         stage('SAST - SonarQube') {
             steps {
-                withCredentials([string(credentialsId: 'sonarqube-token', variable: 'Sonar-Token')]) {
-                    bat '''
-                    sonar-scanner.bat \
-                    -D"sonar.projectKey=pizza_app" \
-                    -D"sonar.sources=/src/index.js" \
-                    -D"sonar.host.url=http://localhost:9000" \
-                    -X
-                    '''
+                bat '''
+                sonar-scanner.bat \
+                -D"sonar.projectKey=pizza_app" 
+                -D"sonar.sources=." \
+                -D"sonar.host.url=http://localhost:9000"
+                -D"sonar.token=sqp_2a1bb86ff24a2dfc37e45743a79dbce97051a03a"
+                '''
                 }
             }
         }

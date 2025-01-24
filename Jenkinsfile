@@ -1,10 +1,6 @@
 pipeline {
     agent any
 
-    environment {
-        SONAR_SERVER_HOME = tool 'SonarServer-610';
-    }
-
     stages {
         stage('Installing Dependencies') {
             steps {
@@ -23,12 +19,13 @@ pipeline {
         }
         stage('Static Code Analysis') {
             steps {
-                bat 'echo $SONAR_SERVER_HOME'
+                withCredentials([string(credentialsId: 'sonarqube-token', variable: 'Sonar-Token')]) {
                 bat '''
-                $SONAR_SERVER_HOME/bin/sonar-scanner.bat 
+                sonar-scanner.bat 
                 -D"sonar.projectKey=pizza_app" \
                 -D"sonar.sources= /src/index.js" \
                 '''
+                }
             }
         }
     }

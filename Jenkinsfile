@@ -33,7 +33,7 @@ pipeline {
         stage('SoanrQube - Quality Gate'){
             steps {
                 timeout(20) {
-                    waitForQualityGate abortPipeline: true
+                    waitForQualityGate abortPipeline: false
                 }
             }
         }

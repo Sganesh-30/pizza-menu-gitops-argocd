@@ -30,11 +30,9 @@ pipeline {
                 }
             }
         }
-        stage('SoanrQube - Quality Gate'){
+        stage('Building Docker Image'){
             steps {
-                timeout(20) {
-                    waitForQualityGate abortPipeline: false
-                }
+                bat 'docker build -t pizza-app -f Dockerfile .'
             }
         }
     }

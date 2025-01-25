@@ -32,7 +32,7 @@ pipeline {
         }
         stage('Building Docker Image'){
             steps {
-                bat 'docker build -t pizza-app -f Dockerfile .'
+                bat 'docker build --no-cache -t pizza-app -f Dockerfile .'
             }
         }
     }

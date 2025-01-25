@@ -30,5 +30,12 @@ pipeline {
                 }
             }
         }
+        stage('SoanrQube - Quality Gate'){
+            steps {
+                timeout(10) {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
     }
 }

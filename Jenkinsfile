@@ -23,10 +23,10 @@ pipeline {
             steps {
                 bat '''
                 sonar-scanner.bat \
-                -D"sonar.projectKey=pizza_app" 
+                -D"sonar.projectKey=pizza_app" \
                 -D"sonar.sources=." \
-                -D"sonar.host.url=http://localhost:9000"
-                -D"sonar.token=sqp_2a1bb86ff24a2dfc37e45743a79dbce97051a03a"
+                -D"sonar.host.url=http://localhost:9000" \
+                -D"sonar.login=873fcca5fbdd8c33f601b35538bfca8bdc825880"
                 '''
             }
         }

@@ -21,7 +21,7 @@ pipeline {
         }
         stage('SAST - SonarQube') {
             steps {
-                withSonarQubeEnv('sonarqube-token') {
+                withSonarQubeEnv('sonarserver') {
                     bat '''
                     sonar-scanner.bat \
                     -D"sonar.projectKey=pizza_app" \

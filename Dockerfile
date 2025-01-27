@@ -8,7 +8,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Upgrade npm to the latest version
-RUN npm install -g npm@latest
+RUN npm install -g npm@11.0.0
 
 # Set npm configurations and install dependencies
 RUN npm config set registry https://registry.npmjs.org/ \
@@ -18,6 +18,8 @@ RUN npm config set registry https://registry.npmjs.org/ \
 
 # Copy the rest of the application code
 COPY . .
+
+EXPOSE 3000
 
 # Specify the command to start the application
 CMD ["npm", "start"]

@@ -4,7 +4,10 @@ WORKDIR /app
 
 COPY package*.json /app/
 
-RUN npm cache clean --force && npm update && npm install --no-cache
+RUN npm config set registry https://registry.npmjs.org/ \
+    && npm config set fetch-timeout 60000 \
+    && npm config set fetch-retries 5 \
+    && npm install --no-cache
 
 COPY . /app/
 

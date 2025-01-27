@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY package*.json /app/
 
-RUN npm update && npm install --no chache
+RUN npm cache clean --force && npm update && npm install --no-cache
 
 COPY . /app/
 

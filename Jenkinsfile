@@ -43,13 +43,13 @@ pipeline {
                     --severity LOW,MEDIUM \
                     --exit-code 0 \
                     --quiet 
-                    --format json -o trivy-MEDIUM-results.json
+                    --format json --output trivy-MEDIUM-results.json
 
                 trivy image sganesh3010/pizza-app:%GIT_COMMIT% \
                     --severity HIGH, CRITICAL \
                     --exit-code 1 \
                     --quiet 
-                    --format json -o trivy-CRITICAL-results.json
+                    --format json --output trivy-CRITICAL-results.json
                 '''
             }
         }

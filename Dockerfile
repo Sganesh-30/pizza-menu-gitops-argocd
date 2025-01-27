@@ -4,8 +4,7 @@ WORKDIR /app
 
 COPY package*.json /app/
 
-RUN npm config set registry https://registry.npmmirror.com/ && \
-    npm install --retry=3 --no-optional --timeout=30000
+RUN npm update && npm install --no chache
 
 COPY . /app/
 

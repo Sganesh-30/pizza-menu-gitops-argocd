@@ -33,19 +33,19 @@ pipeline {
 
         stage('Building Docker Image'){
             steps {
-                bat 'docker build --no-cache -t sganesh3010/pizza-app:$GIT_COMMIT -f Dockerfile .'
+                bat 'docker build --no-cache -t sganesh3010/pizza-app:%GIT_COMMIT% -f Dockerfile .'
             }
         }
         stage('Trivy Vulnarability Scanning'){
             steps {
                 bat '''
-                trivy image sganesh3010/pizza-app:$GIT_COMMIT \
+                trivy image sganesh3010/pizza-app:%GIT_COMMIT% \
                     --severity LOW,MEDIUM \
                     --exit-code 0 \
                     --quiet 
                     --format json -o trivy-MEDIUM-results.json
 
-                trivy image sganesh3010/pizza-app:$GIT_COMMIT \
+                trivy image sganesh3010/pizza-app:%GIT_COMMIT% \
                     --severity HIGH, CRITICAL \
                     --exit-code 1 \
                     --quiet 

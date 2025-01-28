@@ -38,7 +38,9 @@ pipeline {
         }
         stage('Push Image to DockerHub') {
             steps {
-                bat 'docker push sganesh3010/pizza-app:%GIT_COMMIT%'
+                withCredentials([string(credentialsId: 'docker-creds', variable: 'DOCKER_CREDENTIALS')]) {
+                    bat 'docker push sganesh3010/pizza-app:%GIT_COMMIT%'
+                }
             }
         }
         stage('Deploying Container') {

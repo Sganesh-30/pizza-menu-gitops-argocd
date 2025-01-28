@@ -36,23 +36,14 @@ pipeline {
                 bat 'docker build --no-cache -t sganesh3010/pizza-app:%GIT_COMMIT% -f Dockerfile .'
             }
         }
-        stage('Trivy Vulnarability Scanning'){
+        stage('Push Image to DockerHub') {
             steps {
-                bat '''
-                trivy image sganesh3010/pizza-app:%GIT_COMMIT% \
-                    --severity LOW,MEDIUM \
-                    --exit-code 0 \
-                    --quiet \
-                    --timeout 10m \
-                    --format json --output trivy-MEDIUM-results.json
-
-                trivy image sganesh3010/pizza-app:%GIT_COMMIT% \
-                    --severity HIGH,CRITICAL \
-                    --exit-code 1 \
-                    --quiet \
-                    --timeout 10m \
-                    --format json --output trivy-CRITICAL-results.json
-                '''
+                bat 'docker push sganesh3010/pizza-app:%GIT_COMMIT%'
+            }
+        }
+        stage('Deploying Container') {
+            steps {
+                bat 'docker run -d --name pizzashop -d 3000:3000 sganesh3010/pizza-app:%GIT_COMMIT%'
             }
         }
     }

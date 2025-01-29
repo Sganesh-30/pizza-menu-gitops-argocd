@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    environment {
+        DOCKER_CREDENTIALS = 'docker-creds'
+    }
+
     stages {
         stage('Installing Dependencies') {
             steps {

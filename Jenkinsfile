@@ -42,11 +42,8 @@ pipeline {
         }
         stage('Push Image to DockerHub') {
             steps {
-                withCredentials([string(credentialsId: 'docker-creds', variable: 'DOCKER_CREDENTIALS')]) {
-                    bat '''
-                    docker login -u sganesh3010 --password-stdin
-                    docker push sganesh3010/pizza-app:%GIT_COMMIT%'
-                    '''
+                withDockerRegistry(credentialsId: 'dockerhub-creds', url: 'https://hub.docker.com/') {
+                    bat 'docker push sganesh3010/pizza-app:%GIT_COMMIT%'
                 }
             }
         }

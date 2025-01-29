@@ -44,7 +44,7 @@ pipeline {
             steps {
                 withCredentials([string(credentialsId: 'docker-creds', variable: 'DOCKER_CREDENTIALS')]) {
                     bat '''
-                    docker login -u sganesh3010 --password-stdin'
+                    docker login -u sganesh3010 --password-stdin
                     docker push sganesh3010/pizza-app:%GIT_COMMIT%'
                     '''
                 }

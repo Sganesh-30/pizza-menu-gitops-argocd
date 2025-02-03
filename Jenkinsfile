@@ -5,6 +5,7 @@ pipeline {
         DOCKER_CREDENTIALS = 'docker-creds'
         REPO_URL = 'https://github.com/Sganesh-30/pizza-menu-gitops-argocd.git'
         LOCAL_DIR = 'pizza-menu-gitops-argocd'
+        MANIFEST_REPO = credentials('kubernetes-manifest')
     }
 
     stages {
@@ -80,6 +81,10 @@ pipeline {
                 script {
                     withCredentials([string(credentialsId: 'kubernetes-manifest', variable: 'MANIFEST_REPO')]) {
                     bat '''
+
+                    git remote set-url origin https://%MANIFEST_REPO%@github.com/Sganesh-30/pizza-menu-gitops-argocd.git
+                    git add .
+
                     @echo off
                     cd pizza-menu-gitops-argocd\\kubernetes
 
@@ -94,12 +99,14 @@ pipeline {
                     git add deployment.yaml
                     if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
 
+                    cat deployment.yaml
+
                     echo "Committing changes..."
                     git commit -m "Update image to %IMAGE_NAME%"
                     if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
 
                     echo "Pushing changes..."
-                    git push https://%MANIFEST_REPO%@github.com/Sganesh-30/pizza-menu-gitops-argocd.git main
+                    git push -u origin main
                     if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
 
                     echo "Changes pushed successfully!"

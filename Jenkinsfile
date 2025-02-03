@@ -89,28 +89,26 @@ pipeline {
 
                     echo "Checking Git status..."
                     git status
-                    git diff --exit-code deployment.yaml >nul
-                    if %ERRORLEVEL% neq 0 (
-                        echo "Staging changes..."
-                        git add deployment.yaml
-                        if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
 
-                        echo "Committing changes..."
-                        git commit -m "Update image to sganesh3010/pizza-app:%GIT_COMMIT%"
-                        if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
+                    echo "Force staging deployment.yaml..."
+                    git add --force deployment.yaml
+                    if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
 
-                        echo "Pushing changes..."
-                        git push origin main
-                        if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
+                    echo "Verifying staged changes..."
+                    git status
 
-                        echo "Changes pushed successfully!"
-                    ) else (
-                        echo "No changes detected. Skipping commit and push."
-                    )
+                    echo "Committing changes..."
+                    git commit -m "Update image to %IMAGE_NAME%"
+                    if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
+
+                    echo "Pushing changes..."
+                    git push origin main
+                    if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
+
+                    echo "Changes pushed successfully!"
                     '''
                 }
             }
         }
-
     }
 }

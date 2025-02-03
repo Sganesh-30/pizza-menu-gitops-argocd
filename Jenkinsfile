@@ -5,7 +5,7 @@ pipeline {
         DOCKER_CREDENTIALS = 'docker-creds'
         REPO_URL = 'https://github.com/Sganesh-30/pizza-menu-gitops-argocd.git'
         LOCAL_DIR = 'pizza-menu-gitops-argocd'
-        IMAGE_NAME = "sganesh3010/pizza-app:%GIT_COMMIT%"
+        IMAGE_NAME = "sganesh3010/pizza-app:{env.%GIT_COMMIT%}"
     }
 
     stages {

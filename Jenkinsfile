@@ -57,8 +57,6 @@ pipeline {
                 script {
                     bat '''
                     @echo off
-                    setlocal enabledelayedexpansion
-
                     echo "Cleaning up existing repository..."
                     if exist pizza-menu-gitops-argocd (
                         rmdir /s /q pizza-menu-gitops-argocd
@@ -70,11 +68,10 @@ pipeline {
                     if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
 
                     echo "Updating deployment.yaml with new image tag..."
-                    powershell -Command "& { (Get-Content pizza-menu-gitops-argocd/kubernetes/deployment.yaml) -replace 'image: .*', 'image: %IMAGE_NAME%' | Set-Content pizza-menu-gitops-argocd/kubernetes/deployment.yaml }"
+                    powershell -Command "& { (Get-Content pizza-menu-gitops-argocd\\kubernetes\\deployment.yaml) -replace 'image: .*', 'image: %IMAGE_NAME%' | Set-Content pizza-menu-gitops-argocd\\kubernetes\\deployment.yaml }"
                     if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
 
                     echo "File updated successfully!"
-                    endlocal
                     '''
                 }
             }
@@ -85,7 +82,7 @@ pipeline {
                 script {
                     bat '''
                     @echo off
-                    cd pizza-menu-gitops-argocd/kubernetes
+                    cd pizza-menu-gitops-argocd\\kubernetes
 
                     echo "Configuring Git..."
                     git config --global user.email "ganeshsg430@gmail.com"
@@ -93,20 +90,24 @@ pipeline {
 
                     echo "Checking Git status..."
                     git status
+                    git diff --exit-code deployment.yaml >nul
+                    if %ERRORLEVEL% neq 0 (
+                        echo "Staging changes..."
+                        git add deployment.yaml
+                        if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
 
-                    echo "Staging changes..."
-                    git add deployment.yaml
-                    if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
+                        echo "Committing changes..."
+                        git commit -m "Update image to %IMAGE_NAME%"
+                        if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
 
-                    echo "Committing changes..."
-                    git commit -m "Update image to %IMAGE_NAME%"
-                    if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
+                        echo "Pushing changes..."
+                        git push origin main
+                        if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
 
-                    echo "Pushing changes..."
-                    git push origin main
-                    if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
-
-                    echo "Changes pushed successfully!"
+                        echo "Changes pushed successfully!"
+                    ) else (
+                        echo "No changes detected. Skipping commit and push."
+                    )
                     '''
                 }
             }

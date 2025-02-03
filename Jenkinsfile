@@ -3,6 +3,9 @@ pipeline {
 
     environment {
         DOCKER_CREDENTIALS = 'docker-creds'
+        REPO_URL = 'https://github.com/Sganesh-30/pizza-menu-gitops-argocd.git'
+        LOCAL_DIR = 'pizza-menu-gitops-argocd'
+        IMAGE_NAME = "sganesh3010/pizza-app:%GIT_COMMIT%"
     }
 
     stages {
@@ -38,37 +41,40 @@ pipeline {
         stage('Building Docker Image'){
             steps {
                 retry(2) {
-                    bat 'docker build --no-cache -t sganesh3010/pizza-app:%GIT_COMMIT% -f Dockerfile .'
+                    bat 'docker build --no-cache -t %IMAGE_NAME% -f Dockerfile .'
                 }
             }
         }
         stage('Push Image to DockerHub') {
             steps {
                 withDockerRegistry(credentialsId: 'dockerhub-creds', url: "") {
-                    bat 'docker push sganesh3010/pizza-app:%GIT_COMMIT%'
+                    bat 'docker push %IMAGE_NAME%'
                 }
             }
         }
-        stage('Checkout Manifes &Update Image Tag'){
-            steps{
-                script{
+        stages {
+        stage('Checkout Manifest & Update Image Tag') {
+            steps {
+                script {
                     bat '''
-                    if (Test-Path /pizza-menu-gitops-argocd/kubernetes) { Remove-Item -Recurse -Force /pizza-menu-gitops-argocd/kubernetes }
-                    git clone https://github.com/Sganesh-30/pizza-menu-gitops-argocd.git /pizza-menu-gitops-argocd/kubernetes
-                    (Get-Content kubernetes/deployment.yaml) -replace 'sganesh3010.*', 'docker push sganesh3010/pizza-app:%GIT_COMMIT%' | Set-Content kubernetes/deployment.yaml
+                    if exist %LOCAL_DIR% rmdir /s /q %LOCAL_DIR%
+                    git clone %REPO_URL% %LOCAL_DIR%
+                    
+                    powershell -Command "(Get-Content %LOCAL_DIR%/kubernetes/deployment.yaml) -replace 'image: .*', 'image: %IMAGE_NAME%' | Set-Content %LOCAL_DIR%/kubernetes/deployment.yaml"
                     '''
                 }
             }
         }
-        stage('Commite and Push'){
-            steps{
-                script{
+
+        stage('Commit and Push') {
+            steps {
+                script {
                     dir('pizza-menu-gitops-argocd/kubernetes') {
                         bat '''
-                        git config --global user.email "ganeshsg430gmail.com"
+                        git config --global user.email "ganeshsg430@gmail.com"
                         git config --global user.name "Ganesh"
                         git add deployment.yaml
-                        git commit -m "Update image to sganesh3010/pizza-app:%GIT_COMMIT%'"
+                        git commit -m "Update image to %IMAGE_NAME%"
                         git push origin main
                         '''
                     }

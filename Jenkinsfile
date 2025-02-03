@@ -5,7 +5,6 @@ pipeline {
         DOCKER_CREDENTIALS = 'docker-creds'
         REPO_URL = 'https://github.com/Sganesh-30/pizza-menu-gitops-argocd.git'
         LOCAL_DIR = 'pizza-menu-gitops-argocd'
-        IMAGE_NAME = "sganesh3010/pizza-app:{env.%GIT_COMMIT%}"
     }
 
     stages {
@@ -41,14 +40,14 @@ pipeline {
         stage('Building Docker Image'){
             steps {
                 retry(2) {
-                    bat 'docker build --no-cache -t %IMAGE_NAME% -f Dockerfile .'
+                    bat 'docker build --no-cache -t sganesh3010/pizza-app:%GIT_COMMIT% -f Dockerfile .'
                 }
             }
         }
         stage('Push Image to DockerHub') {
             steps {
                 withDockerRegistry(credentialsId: 'dockerhub-creds', url: "") {
-                    bat 'docker push %IMAGE_NAME%'
+                    bat 'docker push sganesh3010/pizza-app:%GIT_COMMIT%'
                 }
             }
         }
@@ -68,7 +67,7 @@ pipeline {
                     if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
 
                     echo "Updating deployment.yaml with new image tag..."
-                    powershell -Command "& { (Get-Content pizza-menu-gitops-argocd\\kubernetes\\deployment.yaml) -replace 'image: .*', 'image: %IMAGE_NAME%' | Set-Content pizza-menu-gitops-argocd\\kubernetes\\deployment.yaml }"
+                    powershell -Command "& { (Get-Content pizza-menu-gitops-argocd\\kubernetes\\deployment.yaml) -replace 'image: .*', 'image: sganesh3010/pizza-app:%GIT_COMMIT%' | Set-Content pizza-menu-gitops-argocd\\kubernetes\\deployment.yaml }"
                     if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
 
                     echo "File updated successfully!"
@@ -97,7 +96,7 @@ pipeline {
                         if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
 
                         echo "Committing changes..."
-                        git commit -m "Update image to %IMAGE_NAME%"
+                        git commit -m "Update image to sganesh3010/pizza-app:%GIT_COMMIT%"
                         if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
 
                         echo "Pushing changes..."

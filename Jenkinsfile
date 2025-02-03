@@ -37,7 +37,9 @@ pipeline {
 
         stage('Building Docker Image'){
             steps {
-                bat 'docker build --no-cache -t sganesh3010/pizza-app:%GIT_COMMIT% -f Dockerfile .'
+                retry(2) {
+                    bat 'docker build --no-cache -t sganesh3010/pizza-app:%GIT_COMMIT% -f Dockerfile .'
+                }
             }
         }
         stage('Push Image to DockerHub') {

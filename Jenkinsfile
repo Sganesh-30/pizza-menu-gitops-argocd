@@ -75,10 +75,10 @@ pipeline {
                 }
             }
         }
-
         stage('Commit and Push') {
             steps {
                 script {
+                    withCredentials([string(credentialsId: 'kubernetes-manifest', variable: 'MANIFEST_REPO')]) {
                     bat '''
                     @echo off
                     cd pizza-menu-gitops-argocd\\kubernetes
@@ -90,25 +90,24 @@ pipeline {
                     echo "Checking Git status..."
                     git status
 
-                    echo "Force staging deployment.yaml..."
-                    git add --force deployment.yaml
+                    echo "Staging changes..."
+                    git add deployment.yaml
                     if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
-
-                    echo "Verifying staged changes..."
-                    git status
 
                     echo "Committing changes..."
                     git commit -m "Update image to %IMAGE_NAME%"
                     if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
 
                     echo "Pushing changes..."
-                    git push origin main
+                    git push https://%MANIFEST_REPO%@github.com/Sganesh-30/pizza-menu-gitops-argocd.git main
                     if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
 
                     echo "Changes pushed successfully!"
                     '''
+                    }
                 }
             }
         }
+
     }
 }

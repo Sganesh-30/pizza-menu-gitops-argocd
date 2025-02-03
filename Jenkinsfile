@@ -82,8 +82,7 @@ pipeline {
                     withCredentials([string(credentialsId: 'kubernetes-manifest', variable: 'MANIFEST_REPO')]) {
                     bat '''
 
-                    git remote set-url origin https://%MANIFEST_REPO%@github.com/Sganesh-30/pizza-menu-gitops-argocd.git
-                    git add .
+                    git remote set-url origin https://%MANIFEST_REPO%@github.com/Sganesh-30/pizza-menu-gitops-argocd.gi
 
                     @echo off
                     cd pizza-menu-gitops-argocd\\kubernetes

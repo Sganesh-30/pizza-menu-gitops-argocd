@@ -49,31 +49,5 @@ pipeline {
                 }
             }
         }
-        stage('Checkout Manifes &Update Image Tag'){
-            steps{
-                script{
-                    bat '''
-                    if (Test-Path /pizza-menu-gitops-argocd/kubernetes) { Remove-Item -Recurse -Force /pizza-menu-gitops-argocd/kubernetes }
-                    git clone https://github.com/Sganesh-30/pizza-menu-gitops-argocd.git /pizza-menu-gitops-argocd/kubernetes
-                    (Get-Content kubernetes/deployment.yaml) -replace 'sganesh3010.*', 'docker push sganesh3010/pizza-app:%GIT_COMMIT%' | Set-Content kubernetes/deployment.yaml
-                    '''
-                }
-            }
-        }
-        stage('Commite and Push'){
-            steps{
-                script{
-                    dir('pizza-menu-gitops-argocd/kubernetes') {
-                        bat '''
-                        git config --global user.email "ganeshsg430gmail.com"
-                        git config --global user.name "Ganesh"
-                        git add deployment.yaml
-                        git commit -m "Update image to sganesh3010/pizza-app:%GIT_COMMIT%'"
-                        git push origin main
-                        '''
-                    }
-                }
-            }
-        }
     }
 }

@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: pizza-menu
+  name: pizza-menu
+  namespace: pizza-menu
+spec:
+  selector:
+    matchLabels:
+      app: pizza-menu
+  template:
+    metadata:
+      labels:
+        app: pizza-menu
+    spec:
+      containers:
+        - image: sganesh3010/pizza-app:ea011179ef4b6f5b18d8eb1e3fcc37a32db070b6
+          name: pizza-app
+          ports:
+            - containerPort: 3000
+              protocol: TCP

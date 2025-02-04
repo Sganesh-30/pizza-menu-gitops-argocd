@@ -5,7 +5,7 @@ pipeline {
         DOCKER_CREDENTIALS = 'docker-creds'
         REPO_URL = 'https://github.com/Sganesh-30/pizza-menu-gitops-argocd.git'
         LOCAL_DIR = 'pizza-menu-gitops-argocd'
-        MANIFEST_REPO = credentials('kubernetes-manifest')
+        MANIFEST_CREDS = credentials('kubernetes-manifest')
     }
 
     stages {
@@ -79,10 +79,10 @@ pipeline {
         stage('Commit and Push') {
             steps {
                 script {
-                    withCredentials([string(credentialsId: 'kubernetes-manifest', variable: 'MANIFEST_REPO')]) {
+                    withCredentials([string(credentialsId: 'kubernetes-manifest', variable: 'MANIFEST_CREDS')]) {
                     bat '''
 
-                    git remote set-url origin https://%MANIFEST_REPO%@github.com/Sganesh-30/pizza-menu-gitops-argocd.git
+                    git remote set-url origin https://%MANIFEST_CREDS%@github.com/Sganesh-30/pizza-menu-gitops-argocd.git
 
                     @echo off
                     cd pizza-menu-gitops-argocd\\kubernetes

@@ -82,7 +82,7 @@ pipeline {
                     withCredentials([string(credentialsId: 'kubernetes-manifest', variable: 'MANIFEST_REPO')]) {
                     bat '''
 
-                    git remote set-url origin https://%MANIFEST_REPO%@github.com/Sganesh-30/pizza-menu-gitops-argocd.gi
+                    git remote set-url origin https://%MANIFEST_REPO%@github.com/Sganesh-30/pizza-menu-gitops-argocd.git
 
                     @echo off
                     cd pizza-menu-gitops-argocd\\kubernetes
@@ -98,10 +98,10 @@ pipeline {
                     git add deployment.yaml
                     if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
 
-                    cat deployment.yaml
+                    type deployment.yaml
 
                     echo "Committing changes..."
-                    git commit -m "Update image to %IMAGE_NAME%"
+                    git commit -m "Update image to sganesh3010/pizza-app:%GIT_COMMIT%"
                     if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
 
                     echo "Pushing changes..."
